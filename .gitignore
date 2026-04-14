@@ -1,0 +1,10 @@
+.msal_cache.bin
+.outreach_state.json
+.texts_state.json
+.env
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+.claude/
+*.xlsx
