@@ -36,7 +36,9 @@ def generate(input_path, output_csv):
     rejected = []
     for lead in leads:
         status = lead.get('deliverability_status', '')
-        if 'REJECTED (mailbox does not exist)' in status:
+        if ('REJECTED (mailbox does not exist)' in status
+                or 'INVALID_DOMAIN' in status
+                or 'Name or service not known' in status):
             rejected.append(lead)
         else:
             accepted.append(lead)
