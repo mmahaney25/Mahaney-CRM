@@ -26,8 +26,8 @@ import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
-CLIENT_ID = os.environ.get("OUTLOOK_CLIENT_ID", "b0a2bb2b-4833-4d35-9da0-b7dd23be3141")
-TENANT_ID = os.environ.get("OUTLOOK_TENANT_ID", "2ca68321-0eda-4908-88b2-424a8cb4b0f9")
+CLIENT_ID = os.environ.get("OUTLOOK_CLIENT_ID") or "b0a2bb2b-4833-4d35-9da0-b7dd23be3141"
+TENANT_ID = os.environ.get("OUTLOOK_TENANT_ID") or "2ca68321-0eda-4908-88b2-424a8cb4b0f9"
 SCOPES = "Mail.Send Mail.Read Mail.ReadWrite openid profile offline_access"
 TOKEN_PATH = Path(os.environ.get("RUNNER_TEMP", "/tmp")) / "outlook-token.json"
 
