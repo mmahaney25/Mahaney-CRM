@@ -1,0 +1,42 @@
+name: Email Follow-up Triage
+
+# Reads the Outlook mailbox via Microsoft Graph and prints a ranked list of
+# real-estate / property-management contacts who need a follow-up. The Outlook
+# token is consumed only inside the job (write-only secret); it is never printed.
+
+on:
+  workflow_dispatch:
+    inputs:
+      lookback_days:
+        description: "How far back to scan SENT mail (days). 35 ~ last month."
+        required: true
+        default: "35"
+      no_reply_days:
+        description: "Silence threshold before a sent mail counts as needs-nudge."
+        required: true
+        default: "4"
+
+permissions:
+  contents: read
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run follow-up triage
+        env:
+          OUTLOOK_TOKEN_JSON: ${{ secrets.OUTLOOK_TOKEN_JSON }}
+          OUTLOOK_CLIENT_ID: ${{ secrets.OUTLOOK_CLIENT_ID }}
+          OUTLOOK_TENANT_ID: ${{ secrets.OUTLOOK_TENANT_ID }}
+          LOOKBACK_DAYS: ${{ inputs.lookback_days }}
+          NO_REPLY_DAYS: ${{ inputs.no_reply_days }}
+        run: python3 scripts/email_followup_triage.py
